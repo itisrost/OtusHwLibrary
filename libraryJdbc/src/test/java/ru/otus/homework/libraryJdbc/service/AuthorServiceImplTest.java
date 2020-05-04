@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(properties = {"spring.liquibase.enabled=false"})
 @DisplayName("Author Service должен")
 class AuthorServiceImplTest {
 

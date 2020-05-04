@@ -1,12 +1,13 @@
 package ru.otus.homework.libraryJdbc.service;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import ru.otus.homework.libraryJdbc.dao.AuthorDao;
 import ru.otus.homework.libraryJdbc.dao.BookDao;
 import ru.otus.homework.libraryJdbc.dao.GenreDao;
@@ -31,21 +32,18 @@ public class BookServiceImpl implements BookService {
     private final GenreDao genreDao;
 
     @Override
-    public String saveBook(String title, String authors, String genres) {
-        long bookId = bookDao.save(new Book(title));
+    public String saveBook(String title, String authorsString, String genresString) {
 
-        saveAuthorsAndGenres(bookId, authors, genres);
+        long bookId = bookDao.save(new Book(0, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
 
         return String.format(SAVED_SUCCESSFULLY, bookId);
     }
 
     @Override
-    public String updateBook(String id, String title, String authors, String genres) {
+    public String updateBook(String id, String title, String authorsString, String genresString) {
         long bookId = parseId(id);
 
-        bookDao.update(new Book(bookId, title));
-
-        saveAuthorsAndGenres(bookId, authors, genres);
+        bookDao.update(new Book(bookId, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
 
         return String.format(UPDATED_SUCCESSFULLY, id);
     }
@@ -54,14 +52,11 @@ public class BookServiceImpl implements BookService {
     public String getBook(String id) {
         long bookId = parseId(id);
 
-        Optional<Book> optionalBook = bookDao.getById(bookId);
-        if (optionalBook.isPresent()) {
-            Book book = optionalBook.get();
-            book.setAuthors(authorDao.getAllByBookId(bookId));
-            book.setGenres(genreDao.getAllByBookId(bookId));
+        Book book = bookDao.getById(bookId);
+        if (book != null) {
             return book.toString();
         } else {
-            return String.format(BOOK_NOT_FOUND, id);
+            return String.format(BOOK_NOT_FOUND, bookId);
         }
     }
 
@@ -69,10 +64,8 @@ public class BookServiceImpl implements BookService {
     public String deleteBook(String id) {
         long bookId = parseId(id);
 
-        if (bookDao.getById(bookId).isPresent()) {
+        if (bookDao.getById(bookId) != null) {
             bookDao.deleteById(bookId);
-            authorDao.deleteAuthorsWithoutBooks();
-            genreDao.deleteGenresWithoutBooks();
             return String.format(DELETED_SUCCESSFULLY, id);
         } else {
             return String.format(BOOK_NOT_FOUND, id);
@@ -86,8 +79,6 @@ public class BookServiceImpl implements BookService {
         if (books.isEmpty()) {
             return NO_BOOKS_IN_LIBRARY;
         } else {
-            books.forEach(book -> book.setAuthors(authorDao.getAllByBookId(book.getId())));
-            books.forEach(book -> book.setGenres(genreDao.getAllByBookId(book.getId())));
             return books.stream().map(Book::toString).collect(Collectors.joining("\n"));
         }
     }
@@ -97,18 +88,28 @@ public class BookServiceImpl implements BookService {
         return bookDao.count().toString();
     }
 
-    private void saveAuthorsAndGenres(long bookId, String authors, String genres) {
-        List<Long> authorIds = Arrays.stream(authors.split(","))
-                .map(String::trim)
-                .map(authorName -> authorDao.getIdByName(authorName).orElseGet(() -> authorDao.save(new Author(authorName))))
-                .collect(Collectors.toList());
+    private List<Author> saveAuthorsFromString(String authorsString) {
+        if (StringUtils.isNotEmpty(authorsString)) {
+            return Arrays.stream(authorsString.split(","))
+                    .map(String::trim)
+                    .map(authorName -> authorDao.getIdByName(authorName).orElseGet(() -> authorDao.save(new Author(authorName))))
+                    .map(id -> authorDao.getById(id).get())
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
+    }
 
-        List<Long> genreIds = Arrays.stream(genres.split(","))
-                .map(String::trim)
-                .map(genreName -> genreDao.getIdByName(genreName).orElseGet(() -> genreDao.save(new Genre(genreName))))
-                .collect(Collectors.toList());
-
-        bookDao.saveBookRelations(bookId, authorIds, genreIds);
+    private List<Genre> saveGenresFromString(String genresString) {
+        if (StringUtils.isNotEmpty(genresString)) {
+            return Arrays.stream(genresString.split(","))
+                    .map(String::trim)
+                    .map(genreName -> genreDao.getIdByName(genreName).orElseGet(() -> genreDao.save(new Genre(genreName))))
+                    .map(id -> genreDao.getById(id).get())
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     private Long parseId(String id) {
