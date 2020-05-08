@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    initialization-mode: always
+    url: jdbc:h2:mem:testdb;DATABASE_TO_UPPER=false
+    driverClassName: org.h2.Driver
+
+  liquibase:
+    changeLog: db.changelog\changelog.yaml
+
+  h2:
+    console:
+      enabled: true
