@@ -1,0 +1,348 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Rostislav Morozov
+      changes:
+        - createTable:
+            tableName: authors
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_author_id
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2
+      author: Rostislav Morozov
+      changes:
+        - insert:
+            tableName: authors
+            columns:
+              - column:
+                  name: id
+                  value: "1"
+              - column:
+                  name: name
+                  value: "Hermann Hesse"
+        - insert:
+            tableName: authors
+            columns:
+              - column:
+                  name: id
+                  value: "2"
+              - column:
+                  name: name
+                  value: "George Orwell"
+
+  - changeSet:
+      id: 3
+      author: Rostislav Morozov
+      changes:
+        - createTable:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_book_id
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 4
+      author: Rostislav Morozov
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  value: "1"
+              - column:
+                  name: title
+                  value: "Steppenwolf"
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  value: "2"
+              - column:
+                  name: title
+                  value: "1984"
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  value: "3"
+              - column:
+                  name: title
+                  value: "Steppenwolf in 1984"
+
+  - changeSet:
+      id: 5
+      author: Rostislav Morozov
+      changes:
+        - createTable:
+            tableName: books_authors
+            columns:
+              - column:
+                  name: book_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_book_id_author
+                    references: books(id)
+              - column:
+                  name: author_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_author_id
+                    references: authors(id)
+
+  - changeSet:
+      id: 6
+      author: Rostislav Morozov
+      changes:
+        - insert:
+            tableName: books_authors
+            columns:
+              - column:
+                  name: book_id
+                  value: "1"
+              - column:
+                  name: author_id
+                  value: "1"
+        - insert:
+            tableName: books_authors
+            columns:
+              - column:
+                  name: book_id
+                  value: "2"
+              - column:
+                  name: author_id
+                  value: "2"
+        - insert:
+            tableName: books_authors
+            columns:
+              - column:
+                  name: book_id
+                  value: "3"
+              - column:
+                  name: author_id
+                  value: "1"
+        - insert:
+            tableName: books_authors
+            columns:
+              - column:
+                  name: book_id
+                  value: "3"
+              - column:
+                  name: author_id
+                  value: "2"
+
+  - changeSet:
+      id: 7
+      author: Rostislav Morozov
+      changes:
+        - createTable:
+            tableName: genres
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_genre_id
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 8
+      author: Rostislav Morozov
+      changes:
+        - insert:
+            tableName: genres
+            columns:
+              - column:
+                  name: id
+                  value: "1"
+              - column:
+                  name: name
+                  value: "Novel"
+        - insert:
+            tableName: genres
+            columns:
+              - column:
+                  name: id
+                  value: "2"
+              - column:
+                  name: name
+                  value: "Dystopia"
+
+  - changeSet:
+      id: 9
+      author: Rostislav Morozov
+      changes:
+        - createTable:
+            tableName: books_genres
+            columns:
+              - column:
+                  name: book_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_book_id_genre
+                    references: books(id)
+              - column:
+                  name: genre_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_genre_id
+                    references: genres(id)
+
+  - changeSet:
+      id: 10
+      author: Rostislav Morozov
+      changes:
+        - insert:
+            tableName: books_genres
+            columns:
+              - column:
+                  name: book_id
+                  value: "1"
+              - column:
+                  name: genre_id
+                  value: "1"
+        - insert:
+            tableName: books_genres
+            columns:
+              - column:
+                  name: book_id
+                  value: "2"
+              - column:
+                  name: genre_id
+                  value: "2"
+        - insert:
+            tableName: books_genres
+            columns:
+              - column:
+                  name: book_id
+                  value: "3"
+              - column:
+                  name: genre_id
+                  value: "1"
+        - insert:
+            tableName: books_genres
+            columns:
+              - column:
+                  name: book_id
+                  value: "3"
+              - column:
+                  name: genre_id
+                  value: "2"
+#
+#  - changeSet:
+#      id: 11
+#      author: Rostislav Morozov
+#      changes:
+#        - createTable:
+#            tableName: comments
+#            columns:
+#              - column:
+#                  name: id
+#                  type: bigint
+#                  autoIncrement: true
+#                  constraints:
+#                    primaryKey: true
+#                    primaryKeyName: pk_comment_id
+#                    nullable: false
+#              - column:
+#                  name: book_id
+#                  type: bigint
+#                  constraints:
+#                    nullable: false
+#                    foreignKeyName: fk_book_id_comment
+#                    references: books(id)
+#              - column:
+#                  name: text
+#                  type: varchar(250)
+#                  constraints:
+#                    nullable: false
+#
+#  - changeSet:
+#      id: 12
+#      author: Rostislav Morozov
+#      changes:
+#        - insert:
+#            tableName: comments
+#            columns:
+#              - column:
+#                  name: id
+#                  value: "1"
+#              - column:
+#                  name: book_id
+#                  value: "1"
+#              - column:
+#                  name: text
+#                  value: "Good novel!"
+#        - insert:
+#            tableName: comments
+#            columns:
+#              - column:
+#                  name: id
+#                  value: "2"
+#              - column:
+#                  name: book_id
+#                  value: "1"
+#              - column:
+#                  name: text
+#                  value: "Very nice."
+#        - insert:
+#            tableName: comments
+#            columns:
+#              - column:
+#                  name: id
+#                  value: "3"
+#              - column:
+#                  name: book_id
+#                  value: "2"
+#              - column:
+#                  name: text
+#                  value: "Amazing!"
+#        - insert:
+#            tableName: comments
+#            columns:
+#              - column:
+#                  name: id
+#                  value: "4"
+#              - column:
+#                  name: book_id
+#                  value: "3"
+#              - column:
+#                  name: text
+#                  value: "I haven't ever dreamed about such a book!"
