@@ -22,7 +22,7 @@ public class AuthorShell {
         return authorService.getAllAuthors();
     }
 
-    @ShellMethod(value = "Get author count", key = {"gac", "getAuthorCount"})
+    @ShellMethod(value = "Get author count", key = {"gact", "getAuthorCount"})
     public String getAuthorsCount() {
         return authorService.getAuthorsCount();
     }

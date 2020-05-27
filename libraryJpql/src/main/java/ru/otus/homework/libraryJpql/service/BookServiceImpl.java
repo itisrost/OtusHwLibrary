@@ -36,8 +36,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public String saveBook(String title, String authorsString, String genresString) {
 
-        long bookId = bookDao.save(new Book(0, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
-//        long bookId = bookDao.save(new Book(0, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString), null));
+//        long bookId = bookDao.save(new Book(0, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
+        long bookId = bookDao.save(new Book(0, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString), null));
 
         return String.format(SAVED_SUCCESSFULLY, bookId);
     }
@@ -46,8 +46,8 @@ public class BookServiceImpl implements BookService {
     public String updateBook(String id, String title, String authorsString, String genresString) {
         long bookId = parseId(id);
 
-        bookDao.save(new Book(bookId, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
-//        bookDao.save(new Book(bookId, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString), null));
+//        bookDao.save(new Book(bookId, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
+        bookDao.save(new Book(bookId, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString), null));
 
         return String.format(UPDATED_SUCCESSFULLY, id);
     }

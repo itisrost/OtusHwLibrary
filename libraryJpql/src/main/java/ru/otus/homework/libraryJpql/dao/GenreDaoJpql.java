@@ -7,13 +7,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import lombok.AllArgsConstructor;
 import ru.otus.homework.libraryJpql.model.Genre;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@AllArgsConstructor
+@Transactional
 public class GenreDaoJpql implements GenreDao {
 
     @PersistenceContext

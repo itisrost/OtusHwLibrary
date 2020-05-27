@@ -1,6 +1,7 @@
 package ru.otus.homework.libraryJpql.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,11 +18,15 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.stereotype.Service;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -46,10 +51,10 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 
-//    @Fetch(FetchMode.SUBSELECT)
-//    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "book_id")
-//    private List<Comment> comments;
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "book_id")
+    private List<Comment> comments;
 
     public Book(String title) {
         this.title = title;
@@ -58,5 +63,11 @@ public class Book {
     public Book(long id, String title) {
         this.id = id;
         this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        return "Book #" + id + " Title=" + title + ", authors=" + authors.stream().map(Author::getName).collect(Collectors.joining(",")).trim()
+                + ", comments=" + comments.stream().map(Comment::getText).collect(Collectors.joining(", ")).trim();
     }
 }

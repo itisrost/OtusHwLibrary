@@ -1,11 +1,12 @@
 mvnw
 mvnw.cmd
-target/
-.mvn
-!**/src/main/**
-!**/src/test/**
 HELP.md
 *.log
+target/
+.mvn
+
+!**/src/main/**
+!**/src/test/**
 
 ### STS ###
 .apt_generated

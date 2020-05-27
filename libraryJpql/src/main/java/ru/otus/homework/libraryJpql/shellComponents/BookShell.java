@@ -22,7 +22,7 @@ public class BookShell {
         return bookService.getAllBooks();
     }
 
-    @ShellMethod(value = "Get book count", key = {"gbc", "getBookCount"})
+    @ShellMethod(value = "Get book count", key = {"gbct", "getBookCount"})
     public String getBooksCount() {
         return bookService.getBooksCount();
     }

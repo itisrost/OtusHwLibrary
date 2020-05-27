@@ -22,7 +22,7 @@ public class GenreShell {
         return genreService.getAllGenres();
     }
 
-    @ShellMethod(value = "Get genre count", key = {"ggc", "getGenreCount"})
+    @ShellMethod(value = "Get genre count", key = {"ggct", "getGenreCount"})
     public String getGenresCount() {
         return genreService.getGenresCount();
     }
