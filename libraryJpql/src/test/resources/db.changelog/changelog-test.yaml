@@ -301,3 +301,85 @@ databaseChangeLog:
               - column:
                   name: genre_id
                   value: "2"
+
+  - changeSet:
+      id: 11
+      author: Rostislav Morozov
+      changes:
+        - createTable:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_comment_id
+                    nullable: false
+              - column:
+                  name: book_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_book_id_comment
+                    references: books(id)
+                    deleteCascade: true
+              - column:
+                  name: text
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 12
+      author: Rostislav Morozov
+      changes:
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  value: "1"
+              - column:
+                  name: book_id
+                  value: "1"
+              - column:
+                  name: text
+                  value: "Wow!"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  value: "2"
+              - column:
+                  name: book_id
+                  value: "2"
+              - column:
+                  name: text
+                  value: "Very nice."
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  value: "3"
+              - column:
+                  name: book_id
+                  value: "2"
+              - column:
+                  name: text
+                  value: "Amazing!"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  value: "4"
+              - column:
+                  name: book_id
+                  value: "3"
+              - column:
+                  name: text
+                  value: "I haven't ever dreamed about such a book!"

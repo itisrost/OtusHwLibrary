@@ -44,7 +44,6 @@ public class AuthorDaoJpqlTest {
                 .isEqualToComparingFieldByField(expectedAuthor);
     }
 
-
     @Test
     @DisplayName("возвращать id автора по имени")
     void shouldReturnExpectedIdByAuthorName() {

@@ -14,4 +14,6 @@ public interface CommentDao {
     long save(Comment Comment);
 
     List<Comment> getAll();
+
+    List<Comment> getAllByBookId(long bookId);
 }

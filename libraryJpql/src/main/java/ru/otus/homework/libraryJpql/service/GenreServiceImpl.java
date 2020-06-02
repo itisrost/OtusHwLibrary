@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import ru.otus.homework.libraryJpql.dao.GenreDao;
 import ru.otus.homework.libraryJpql.model.Genre;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +23,7 @@ public class GenreServiceImpl implements GenreService {
     private final GenreDao genreDao;
 
     @Override
+    @Transactional
     public String updateGenre(String id, String name) {
         long genreId = parseId(id);
 
@@ -31,6 +33,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getGenre(String id) {
         long genreId = parseId(id);
 
@@ -43,6 +46,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getAllGenres() {
         List<Genre> genres = genreDao.getAll();
 
@@ -54,6 +58,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getGenresCount() {
         return genreDao.count().toString();
     }

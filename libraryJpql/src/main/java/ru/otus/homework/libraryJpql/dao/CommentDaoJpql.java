@@ -3,17 +3,14 @@ package ru.otus.homework.libraryJpql.dao;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-import lombok.AllArgsConstructor;
 import ru.otus.homework.libraryJpql.model.Comment;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Transactional
 public class CommentDaoJpql implements CommentDao {
 
     @PersistenceContext
@@ -42,6 +39,13 @@ public class CommentDaoJpql implements CommentDao {
     @Override
     public List<Comment> getAll() {
         TypedQuery<Comment> query = em.createQuery("select c from Comment c", Comment.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Comment> getAllByBookId(long bookId) {
+        TypedQuery<Comment> query = em.createQuery("select c from Comment c where c.book.id = :bookId", Comment.class);
+        query.setParameter("bookId", bookId);
         return query.getResultList();
     }
 }

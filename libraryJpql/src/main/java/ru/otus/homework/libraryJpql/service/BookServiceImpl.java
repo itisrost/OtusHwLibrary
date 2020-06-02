@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import ru.otus.homework.libraryJpql.dao.AuthorDao;
@@ -17,6 +15,7 @@ import ru.otus.homework.libraryJpql.model.Author;
 import ru.otus.homework.libraryJpql.model.Book;
 import ru.otus.homework.libraryJpql.model.Genre;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -34,26 +33,26 @@ public class BookServiceImpl implements BookService {
     private final GenreDao genreDao;
 
     @Override
+    @Transactional
     public String saveBook(String title, String authorsString, String genresString) {
 
-//        long bookId = bookDao.save(new Book(0, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
         long bookId = bookDao.save(new Book(0, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString), null));
 
         return String.format(SAVED_SUCCESSFULLY, bookId);
     }
 
     @Override
+    @Transactional
     public String updateBook(String id, String title, String authorsString, String genresString) {
         long bookId = parseId(id);
 
-//        bookDao.save(new Book(bookId, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
         bookDao.save(new Book(bookId, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString), null));
 
         return String.format(UPDATED_SUCCESSFULLY, id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public String getBook(String id) {
         long bookId = parseId(id);
 
@@ -81,7 +80,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public String getAllBooks() {
         List<Book> books = bookDao.getAll();
 
@@ -93,6 +92,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getBooksCount() {
         return bookDao.count().toString();
     }

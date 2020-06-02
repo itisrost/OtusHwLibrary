@@ -5,13 +5,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 
 import ru.otus.homework.libraryJpql.model.Book;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Transactional
 public class BookDaoJpql implements BookDao {
 
     @PersistenceContext

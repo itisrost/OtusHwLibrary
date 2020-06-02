@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import ru.otus.homework.libraryJpql.dao.AuthorDao;
 import ru.otus.homework.libraryJpql.model.Author;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +23,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorDao authorDao;
 
     @Override
+    @Transactional
     public String updateAuthor(String id, String name) {
         long authorId = parseId(id);
 
@@ -31,6 +33,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getAuthor(String id) {
         long authorId = parseId(id);
 
@@ -43,6 +46,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getAllAuthors() {
         List<Author> authors = authorDao.getAll();
 
@@ -54,6 +58,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getAuthorsCount() {
         return authorDao.count().toString();
     }

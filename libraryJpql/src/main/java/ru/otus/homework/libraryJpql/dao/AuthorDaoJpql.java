@@ -7,12 +7,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 
 import ru.otus.homework.libraryJpql.model.Author;
 import org.springframework.stereotype.Repository;
 
-@Transactional
 @Repository
 public class AuthorDaoJpql implements AuthorDao {
 
