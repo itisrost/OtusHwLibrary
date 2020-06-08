@@ -28,8 +28,8 @@ public class AuthorDaoJpql implements AuthorDao {
     }
 
     @Override
-    public Optional<Long> getIdByName(String name) {
-        TypedQuery<Long> query = em.createQuery("select a.id from Author a where a.name = :name", Long.class);
+    public Optional<Author> getByName(String name) {
+        TypedQuery<Author> query = em.createQuery("select a from Author a where a.name = :name", Author.class);
         query.setParameter("name", name);
 
         try {
@@ -40,13 +40,13 @@ public class AuthorDaoJpql implements AuthorDao {
     }
 
     @Override
-    public long save(Author author) {
+    public Author save(Author author) {
         if (author.getId() == 0) {
             em.persist(author);
         } else {
             em.merge(author);
         }
-        return author.getId();
+        return author;
     }
 
     @Override

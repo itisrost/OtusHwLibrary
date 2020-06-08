@@ -11,9 +11,9 @@ public interface AuthorDao {
 
     Optional<Author> getById(long id);
 
-    Optional<Long> getIdByName(String name);
+    Optional<Author> getByName(String name);
 
-    long save(Author author);
+    Author save(Author author);
 
     List<Author> getAll();
 

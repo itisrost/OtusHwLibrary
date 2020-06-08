@@ -101,8 +101,7 @@ public class BookServiceImpl implements BookService {
         if (StringUtils.isNotEmpty(authorsString)) {
             return Arrays.stream(authorsString.split(","))
                     .map(String::trim)
-                    .map(authorName -> authorDao.getIdByName(authorName).orElseGet(() -> authorDao.save(new Author(authorName))))
-                    .map(id -> authorDao.getById(id).get())
+                    .map(authorName -> authorDao.getByName(authorName).orElseGet(() -> authorDao.save(new Author(authorName))))
                     .collect(Collectors.toList());
         } else {
             return new ArrayList<>();
@@ -113,8 +112,7 @@ public class BookServiceImpl implements BookService {
         if (StringUtils.isNotEmpty(genresString)) {
             return Arrays.stream(genresString.split(","))
                     .map(String::trim)
-                    .map(genreName -> genreDao.getIdByName(genreName).orElseGet(() -> genreDao.save(new Genre(genreName))))
-                    .map(id -> genreDao.getById(id).get())
+                    .map(genreName -> genreDao.getByName(genreName).orElseGet(() -> genreDao.save(new Genre(genreName))))
                     .collect(Collectors.toList());
         } else {
             return new ArrayList<>();

@@ -48,10 +48,10 @@ class GenreDaoJpqlTest {
     @Test
     @DisplayName("возвращать id жанра по имени")
     void shouldReturnExpectedIdByGenreName() {
-        val expected = dao.getIdByName(CYBERPUNK).orElse(null);
+        val expected = dao.getByName(CYBERPUNK).orElse(null);
 
         assertThat(expected).isNotNull();
-        assertThat(expected).isEqualTo(2);
+        assertThat(expected.getId()).isEqualTo(EXPECTED_ID);
     }
 
     @Test

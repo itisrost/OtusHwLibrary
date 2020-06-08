@@ -72,7 +72,7 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("сообщать, если автора с введённым id нет в БД")
     void shouldNoticeIfAuthorNotFound() {
-        when(authorDao.getById(ID_LONG)).thenReturn(Optional.empty());
+        when(authorDao.getById(ID_LONG)).thenReturn(null);
 
         assertThat(authorService.getAuthor(ID_STRING)).isEqualTo(AUTHOR_NOT_FOUND);
     }

@@ -47,9 +47,9 @@ public class AuthorDaoJpqlTest {
     @Test
     @DisplayName("возвращать id автора по имени")
     void shouldReturnExpectedIdByAuthorName() {
-        val expected = dao.getIdByName(JEFF_NOON).orElse(null);
+        val expected = dao.getByName(JEFF_NOON).orElse(null);
         assertThat(expected).isNotNull();
-        assertThat(expected).isEqualTo(EXPECTED_ID);
+        assertThat(expected.getId()).isEqualTo(EXPECTED_ID);
     }
 
     @Test

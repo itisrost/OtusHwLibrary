@@ -28,8 +28,8 @@ public class GenreDaoJpql implements GenreDao {
     }
 
     @Override
-    public Optional<Long> getIdByName(String name) {
-        TypedQuery<Long> query = em.createQuery("select g.id from Genre g where g.name = :name", Long.class);
+    public Optional<Genre> getByName(String name) {
+        TypedQuery<Genre> query = em.createQuery("select g from Genre g where g.name = :name", Genre.class);
         query.setParameter("name", name);
 
         try {
@@ -40,13 +40,13 @@ public class GenreDaoJpql implements GenreDao {
     }
 
     @Override
-    public long save(Genre genre) {
+    public Genre save(Genre genre) {
         if (genre.getId() == 0) {
             em.persist(genre);
         } else {
             em.merge(genre);
         }
-        return genre.getId();
+        return genre;
     }
 
     @Override

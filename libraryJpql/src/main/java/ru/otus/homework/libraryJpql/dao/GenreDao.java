@@ -11,9 +11,9 @@ public interface GenreDao {
 
     Optional<Genre> getById(long id);
 
-    Optional<Long> getIdByName(String name);
+    Optional<Genre> getByName(String name);
 
-    long save(Genre Genre);
+    Genre save(Genre Genre);
 
     List<Genre> getAll();
 
