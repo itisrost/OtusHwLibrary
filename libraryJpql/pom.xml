@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.otus.homework</groupId>
-	<artifactId>libraryJdbc</artifactId>
+	<artifactId>libraryJpql</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>libraryJdbc</name>
-	<description>Library app from Otus Spring course homework, task 1 - JDBC</description>
+	<name>libraryJpql</name>
+	<description>Library app from Otus Spring course homework, task 2 - JPQL</description>
 
 	<build>
 		<plugins>
@@ -34,6 +34,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
 		<dependency>
