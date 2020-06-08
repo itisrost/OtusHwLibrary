@@ -44,7 +44,7 @@ class CommentServiceImplTest {
     public static final String UPDATE_SUCCESSFUL = String.format("Comment with id = %s updated successfully!", ID_STRING);
     public static final String ID_MUST_BE_A_NUMBER = "Comment id must be a number!";
     public static final String WOW = "Wow!";
-    public static final Book EXPECTED_BOOK = new Book(ID_LONG, "Book", null, null, null);
+    public static final Book EXPECTED_BOOK = new Book(ID_LONG, "Book", null, null);
     public static final Comment EXPECTED_COMMENT = new Comment(ID_LONG, EXPECTED_BOOK, WOW);
 
     @MockBean

@@ -51,7 +51,7 @@ class BookServiceImplTest {
     public static final String CYBERPUNK = "Cyberpunk";
     public static final List<Genre> EXPECTED_GENRES = Arrays.asList(new Genre(ID_LONG, CYBERPUNK));
     public static final String TITLE = "Vurt";
-    public static final Book EXPECTED_BOOK = new Book(ID_LONG, TITLE, EXPECTED_AUTHORS, EXPECTED_GENRES, null);
+    public static final Book EXPECTED_BOOK = new Book(ID_LONG, TITLE, EXPECTED_AUTHORS, EXPECTED_GENRES);
 
     @MockBean
     private AuthorDao authorDao;
@@ -124,7 +124,7 @@ class BookServiceImplTest {
     @Test
     @DisplayName("возвращать список всех книг из БД")
     void shouldReturnAllBooks() {
-        List<Book> books = List.of(new Book(2, "Pollen", new ArrayList<>(), new ArrayList<>(), null), EXPECTED_BOOK);
+        List<Book> books = List.of(new Book(2, "Pollen", new ArrayList<>(), new ArrayList<>()), EXPECTED_BOOK);
         String expectedString = books.stream().map(Book::toString).collect(Collectors.joining("\n"));
         when(bookDao.getAll()).thenReturn(books);
 

@@ -51,12 +51,12 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Comment> comments;
 
     @Override
     public String toString() {
-        return "Book #" + id + " Title=" + title + ", authors=" + authors.stream().map(Author::getName).collect(Collectors.joining(",")).trim()
+        return "Book #" + id + " Title=" + title + ", authors=" + authors.stream().map(Author::getName).collect(Collectors.joining(", ")).trim()
                 + ", genres=" + genres.stream().map(Genre::getName).collect(Collectors.joining(", ")).trim();
     }
 }
