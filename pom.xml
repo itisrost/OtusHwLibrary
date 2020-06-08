@@ -13,6 +13,7 @@
 	<modules>
         <module>libraryJdbc</module>
         <module>libraryJpql</module>
+        <module>libraryJpa</module>
     </modules>
 
 	<dependencies>
