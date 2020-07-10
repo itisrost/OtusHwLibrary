@@ -8,5 +8,5 @@ public interface GenreService {
 
     String getAllGenres();
 
-    String getGenresCount();
+    long getGenresCount();
 }

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.libraryJpa.dao.GenreDao;
+import ru.otus.homework.libraryJpa.repository.GenreDao;
 import ru.otus.homework.libraryJpa.model.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

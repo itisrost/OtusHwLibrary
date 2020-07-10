@@ -1,11 +1,10 @@
-package ru.otus.homework.libraryJpa.dao;
+package ru.otus.homework.libraryJpa.repository;
 
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 
 import ru.otus.homework.libraryJpa.model.Comment;
 import org.springframework.stereotype.Repository;

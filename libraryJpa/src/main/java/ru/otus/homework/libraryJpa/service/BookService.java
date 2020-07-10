@@ -12,5 +12,5 @@ public interface BookService {
 
     String getAllBooks();
 
-    String getBooksCount();
+    long getBooksCount();
 }

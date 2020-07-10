@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
-import ru.otus.homework.libraryJpa.dao.AuthorDao;
+import ru.otus.homework.libraryJpa.repository.AuthorDao;
 import ru.otus.homework.libraryJpa.model.Author;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

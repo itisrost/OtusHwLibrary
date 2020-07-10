@@ -9,9 +9,6 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.libraryJpa.dao.AuthorDao;
-import ru.otus.homework.libraryJpa.dao.BookDao;
-import ru.otus.homework.libraryJpa.dao.GenreDao;
 import ru.otus.homework.libraryJpa.model.Author;
 import ru.otus.homework.libraryJpa.model.Book;
 import ru.otus.homework.libraryJpa.model.Genre;
@@ -20,6 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.otus.homework.libraryJpa.repository.AuthorRepository;
+import ru.otus.homework.libraryJpa.repository.BookRepository;
+import ru.otus.homework.libraryJpa.repository.GenreRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,8 +34,8 @@ class BookServiceImplTest {
     private static class Config {
 
         @Bean
-        public BookService bookService(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao) {
-            return new BookServiceImpl(bookDao, authorDao, genreDao);
+        public BookService bookService(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
+            return new BookServiceImpl(bookRepository, authorRepository, genreRepository);
         }
     }
 
@@ -54,11 +54,11 @@ class BookServiceImplTest {
     public static final Book EXPECTED_BOOK = new Book(ID_LONG, TITLE, EXPECTED_AUTHORS, EXPECTED_GENRES);
 
     @MockBean
-    private AuthorDao authorDao;
+    private AuthorRepository authorRepository;
     @MockBean
-    private BookDao bookDao;
+    private BookRepository bookRepository;
     @MockBean
-    private GenreDao genreDao;
+    private GenreRepository genreRepository;
 
     @Autowired
     private BookService bookService;
@@ -67,9 +67,9 @@ class BookServiceImplTest {
     @DisplayName("сохранять книгу")
     void shouldSaveBook() {
 
-        when(authorDao.getById(0)).thenReturn(Optional.of(new Author(ID_LONG, JEFF_NOON)));
-        when(genreDao.getById(0)).thenReturn(Optional.of(new Genre(ID_LONG, CYBERPUNK)));
-        when(bookDao.save(any())).thenReturn(ID_LONG);
+        when(authorRepository.findByName(any())).thenReturn(new Author(ID_LONG, JEFF_NOON));
+        when(genreRepository.findByName(any())).thenReturn(new Genre(ID_LONG, CYBERPUNK));
+        when(bookRepository.save(any())).thenReturn(EXPECTED_BOOK);
 
         assertThat(bookService.saveBook(TITLE, JEFF_NOON, CYBERPUNK)).isEqualTo(SAVE_SUCCESSFUL);
     }
@@ -77,8 +77,8 @@ class BookServiceImplTest {
     @Test
     @DisplayName("обновлять книгу")
     void shouldUpdateBook() {
-        when(authorDao.getById(0)).thenReturn(Optional.of(new Author(ID_LONG, JEFF_NOON)));
-        when(genreDao.getById(0)).thenReturn(Optional.of(new Genre(ID_LONG, CYBERPUNK)));
+        when(authorRepository.findByName(any())).thenReturn(new Author(ID_LONG, JEFF_NOON));
+        when(genreRepository.findByName(any())).thenReturn(new Genre(ID_LONG, CYBERPUNK));
 
         assertThat(bookService.updateBook(ID_STRING, TITLE, JEFF_NOON, CYBERPUNK)).isEqualTo(UPDATE_SUCCESSFUL);
     }
@@ -87,7 +87,7 @@ class BookServiceImplTest {
     @Test
     @DisplayName("возвращать книгу по id если она есть в БД")
     void shouldReturnExpectedBookById() {
-        when(bookDao.getById(ID_LONG)).thenReturn(EXPECTED_BOOK);
+        when(bookRepository.findById(ID_LONG)).thenReturn(Optional.of(EXPECTED_BOOK));
 
         assertThat(bookService.getBook(ID_STRING)).isEqualTo(EXPECTED_BOOK.toString());
     }
@@ -101,7 +101,7 @@ class BookServiceImplTest {
     @Test
     @DisplayName("сообщать, если искомой книги с введённым id нет в БД")
     void shouldNoticeIfBookNotFound() {
-        when(bookDao.getById(ID_LONG)).thenReturn(null);
+        when(bookRepository.findById(ID_LONG)).thenReturn(Optional.empty());
 
         assertThat(bookService.getBook(ID_STRING)).isEqualTo(BOOK_NOT_FOUND);
     }
@@ -109,14 +109,14 @@ class BookServiceImplTest {
     @Test
     @DisplayName("удалять книгу, если она есть в БД")
     void shouldDeleteBookIfExists() {
-        when(bookDao.getById(ID_LONG)).thenReturn(EXPECTED_BOOK);
+        when(bookRepository.findById(ID_LONG)).thenReturn(Optional.of(EXPECTED_BOOK));
         assertThat(bookService.deleteBook(ID_STRING)).isEqualTo(DELETE_SUCCESSFUL);
     }
 
     @Test
     @DisplayName("сообщать, если удаляемой книги с введённым id нет в БД")
     void shouldNoticeIfBookToDeleteIsNotFound() {
-        when(bookDao.getById(ID_LONG)).thenReturn(null);
+        when(bookRepository.findById(ID_LONG)).thenReturn(Optional.empty());
 
         assertThat(bookService.getBook(ID_STRING)).isEqualTo(BOOK_NOT_FOUND);
     }
@@ -126,7 +126,7 @@ class BookServiceImplTest {
     void shouldReturnAllBooks() {
         List<Book> books = List.of(new Book(2, "Pollen", new ArrayList<>(), new ArrayList<>()), EXPECTED_BOOK);
         String expectedString = books.stream().map(Book::toString).collect(Collectors.joining("\n"));
-        when(bookDao.getAll()).thenReturn(books);
+        when(bookRepository.findAll()).thenReturn(books);
 
         assertThat(bookService.getAllBooks()).isEqualTo(expectedString);
     }
@@ -134,7 +134,7 @@ class BookServiceImplTest {
     @Test
     @DisplayName("сообщать, если в БД нет книг")
     void shouldNoticeIfNoBooksInDB() {
-        when(bookDao.getAll()).thenReturn(new ArrayList<>());
+        when(bookRepository.findAll()).thenReturn(new ArrayList<>());
 
         assertThat(bookService.getAllBooks()).isEqualTo("There is no books in library :(");
     }
@@ -142,8 +142,8 @@ class BookServiceImplTest {
     @Test
     @DisplayName("возвращать верное количество книг из БД")
     void shouldReturnCorrectBooksCount() {
-        when(bookDao.count()).thenReturn(ID_LONG);
+        when(bookRepository.count()).thenReturn(ID_LONG);
 
-        assertThat(bookService.getBooksCount()).isEqualTo(ID_STRING);
+        assertThat(bookService.getBooksCount()).isEqualTo(ID_LONG);
     }
 }

@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.libraryJpa.dao.AuthorDao;
 import ru.otus.homework.libraryJpa.model.Author;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.otus.homework.libraryJpa.repository.AuthorRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,8 +29,8 @@ class AuthorServiceImplTest {
     private static class Config {
 
         @Bean
-        public AuthorService authorService(AuthorDao authorDao){
-            return new AuthorServiceImpl(authorDao);
+        public AuthorService authorService(AuthorRepository authorRepository){
+            return new AuthorServiceImpl(authorRepository);
         }
     }
 
@@ -43,7 +43,7 @@ class AuthorServiceImplTest {
     public static final Author EXPECTED_AUTHOR = new Author(ID_LONG, ANTHONY_BURGESS);
 
     @MockBean
-    private AuthorDao authorDao;
+    private AuthorRepository authorRepository;
 
     @Autowired
     private AuthorService authorService;
@@ -58,7 +58,7 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("возвращать автора по id, если он есть в БД")
     void shouldReturnExpectedAuthorById() {
-        when(authorDao.getById(3)).thenReturn(Optional.of(EXPECTED_AUTHOR));
+        when(authorRepository.findById(ID_LONG)).thenReturn(Optional.of(EXPECTED_AUTHOR));
 
         assertThat(authorService.getAuthor(ID_STRING)).isEqualTo(EXPECTED_AUTHOR.toString());
     }
@@ -72,7 +72,7 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("сообщать, если автора с введённым id нет в БД")
     void shouldNoticeIfAuthorNotFound() {
-        when(authorDao.getById(ID_LONG)).thenReturn(null);
+        when(authorRepository.findById(ID_LONG)).thenReturn(Optional.empty());
 
         assertThat(authorService.getAuthor(ID_STRING)).isEqualTo(AUTHOR_NOT_FOUND);
     }
@@ -82,7 +82,7 @@ class AuthorServiceImplTest {
     void shouldReturnAllAuthors() {
         List<Author> authors = List.of(new Author(2, "Jeff Noon"), EXPECTED_AUTHOR);
         String expectedString = authors.stream().map(Author::toString).collect(Collectors.joining("\n"));
-        when(authorDao.getAll()).thenReturn(authors);
+        when(authorRepository.findAll()).thenReturn(authors);
 
         assertThat(authorService.getAllAuthors()).isEqualTo(expectedString);
     }
@@ -90,7 +90,7 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("сообщать, если в БД нет авторов")
     void shouldNoticeIfNoAuthorsInDB() {
-        when(authorDao.getAll()).thenReturn(new ArrayList<>());
+        when(authorRepository.findAll()).thenReturn(new ArrayList<>());
 
         assertThat(authorService.getAllAuthors()).isEqualTo("There is no authors in library :(");
     }
@@ -98,8 +98,8 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("возвращать верное количество авторов из БД")
     void shouldReturnCorrectAuthorsCount() {
-        when(authorDao.count()).thenReturn(ID_LONG);
+        when(authorRepository.count()).thenReturn(ID_LONG);
 
-        assertThat(authorService.getAuthorsCount()).isEqualTo(ID_STRING);
+        assertThat(authorService.getAuthorsCount()).isEqualTo(ID_LONG);
     }
 }

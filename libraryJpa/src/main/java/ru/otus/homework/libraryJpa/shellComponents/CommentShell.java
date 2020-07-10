@@ -28,7 +28,7 @@ public class CommentShell {
     }
 
     @ShellMethod(value = "Get comment count", key = {"gcct", "getCommentCount"})
-    public String getCommentsCount() {
+    public long getCommentsCount() {
         return commentService.getCommentsCount();
     }
 
@@ -39,9 +39,14 @@ public class CommentShell {
     }
 
     @ShellMethod(value = "Update comment", key = {"uc", "updateComment"})
-    public String addComment(@ShellOption(help = "Comment id") String commentId,
+    public String updateComment(@ShellOption(help = "Comment id") String commentId,
                              @ShellOption(help = "Book id") String bookId,
                               @ShellOption(help = "Comment text") String text) {
         return commentService.updateComment(commentId, bookId, text);
+    }
+
+    @ShellMethod(value = "Delete comment", key = {"dc", "deleteComment"})
+    public String deleteComment(@ShellOption(help = "Comment id") String commentId) {
+        return commentService.deleteComment(commentId);
     }
 }

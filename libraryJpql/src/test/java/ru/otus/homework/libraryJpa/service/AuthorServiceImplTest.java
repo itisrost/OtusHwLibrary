@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.libraryJpa.dao.AuthorDao;
+import ru.otus.homework.libraryJpa.repository.AuthorDao;
 import ru.otus.homework.libraryJpa.model.Author;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import ru.otus.homework.libraryJpa.dao.AuthorDao;
-import ru.otus.homework.libraryJpa.dao.BookDao;
-import ru.otus.homework.libraryJpa.dao.GenreDao;
+import ru.otus.homework.libraryJpa.repository.AuthorDao;
+import ru.otus.homework.libraryJpa.repository.BookDao;
+import ru.otus.homework.libraryJpa.repository.GenreDao;
 import ru.otus.homework.libraryJpa.model.Author;
 import ru.otus.homework.libraryJpa.model.Book;
 import ru.otus.homework.libraryJpa.model.Genre;

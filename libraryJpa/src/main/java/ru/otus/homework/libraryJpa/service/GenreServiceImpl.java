@@ -6,10 +6,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
-import ru.otus.homework.libraryJpa.dao.GenreDao;
 import ru.otus.homework.libraryJpa.model.Genre;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.homework.libraryJpa.repository.GenreRepository;
 
 @Service
 @AllArgsConstructor
@@ -20,14 +20,14 @@ public class GenreServiceImpl implements GenreService {
     public static final String NO_GENRES_IN_LIBRARY = "There is no genres in library :(";
     public static final String ID_MUST_BE_A_NUMBER = "Genre id must be a number!";
 
-    private final GenreDao genreDao;
+    private final GenreRepository genreRepository;
 
     @Override
     @Transactional
     public String updateGenre(String id, String name) {
         long genreId = parseId(id);
 
-        genreDao.save(new Genre(genreId, name));
+        genreRepository.save(new Genre(genreId, name));
 
         return String.format(UPDATED_SUCCESSFULLY, id);
     }
@@ -37,7 +37,7 @@ public class GenreServiceImpl implements GenreService {
     public String getGenre(String id) {
         long genreId = parseId(id);
 
-        Optional<Genre> genre = genreDao.getById(genreId);
+        Optional<Genre> genre = genreRepository.findById(genreId);
         if (genre.isPresent()) {
             return genre.get().toString();
         } else {
@@ -48,7 +48,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional(readOnly = true)
     public String getAllGenres() {
-        List<Genre> genres = genreDao.getAll();
+        List<Genre> genres = genreRepository.findAll();
 
         if (genres.isEmpty()) {
             return NO_GENRES_IN_LIBRARY;
@@ -59,8 +59,8 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional(readOnly = true)
-    public String getGenresCount() {
-        return genreDao.count().toString();
+    public long getGenresCount() {
+        return genreRepository.count();
     }
 
     private Long parseId(String id) {

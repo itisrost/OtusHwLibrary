@@ -8,13 +8,13 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.libraryJpa.dao.GenreDao;
 import ru.otus.homework.libraryJpa.model.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.otus.homework.libraryJpa.repository.GenreRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -28,8 +28,8 @@ class GenreServiceImplTest {
     private static class Config {
 
         @Bean
-        public GenreService genreService(GenreDao genreDao){
-            return new GenreServiceImpl(genreDao);
+        public GenreService genreService(GenreRepository genreRepository){
+            return new GenreServiceImpl(genreRepository);
         }
     }
 
@@ -42,7 +42,7 @@ class GenreServiceImplTest {
     public static final Genre EXPECTED_GENRE = new Genre(ID_LONG, SCIENCE_FICTION);
 
     @MockBean
-    private GenreDao genreDao;
+    private GenreRepository genreRepository;
 
     @Autowired
     private GenreService genreService;
@@ -57,7 +57,7 @@ class GenreServiceImplTest {
     @Test
     @DisplayName("возвращать жанр по id, если он есть в БД")
     void shouldReturnExpectedGenreById() {
-        when(genreDao.getById(3)).thenReturn(Optional.of(EXPECTED_GENRE));
+        when(genreRepository.findById(ID_LONG)).thenReturn(Optional.of(EXPECTED_GENRE));
 
         assertThat(genreService.getGenre(ID_STRING)).isEqualTo(EXPECTED_GENRE.toString());
     }
@@ -71,7 +71,7 @@ class GenreServiceImplTest {
     @Test
     @DisplayName("сообщать, если жанра с введённым id нет в БД")
     void shouldNoticeIfGenreNotFound() {
-        when(genreDao.getById(ID_LONG)).thenReturn(Optional.empty());
+        when(genreRepository.findById(ID_LONG)).thenReturn(Optional.empty());
 
         assertThat(genreService.getGenre(ID_STRING)).isEqualTo(GENRE_NOT_FOUND);
     }
@@ -81,7 +81,7 @@ class GenreServiceImplTest {
     void shouldReturnAllGenres() {
         List<Genre> genres = List.of(new Genre(2, "Cyberpunk"), EXPECTED_GENRE);
         String expectedString = genres.stream().map(Genre::toString).collect(Collectors.joining("\n"));
-        when(genreDao.getAll()).thenReturn(genres);
+        when(genreRepository.findAll()).thenReturn(genres);
 
         assertThat(genreService.getAllGenres()).isEqualTo(expectedString);
     }
@@ -89,7 +89,7 @@ class GenreServiceImplTest {
     @Test
     @DisplayName("сообщать, если в БД нет жанров")
     void shouldNoticeIfNoGenresInDB() {
-        when(genreDao.getAll()).thenReturn(new ArrayList<>());
+        when(genreRepository.findAll()).thenReturn(new ArrayList<>());
 
         assertThat(genreService.getAllGenres()).isEqualTo("There is no genres in library :(");
     }
@@ -97,8 +97,8 @@ class GenreServiceImplTest {
     @Test
     @DisplayName("возвращать верное количество жанров из БД")
     void shouldReturnCorrectGenresCount() {
-        when(genreDao.count()).thenReturn(ID_LONG);
+        when(genreRepository.count()).thenReturn(ID_LONG);
 
-        assertThat(genreService.getGenresCount()).isEqualTo(ID_STRING);
+        assertThat(genreService.getGenresCount()).isEqualTo(ID_LONG);
     }
 }

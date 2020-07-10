@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
-import ru.otus.homework.libraryJpa.dao.BookDao;
-import ru.otus.homework.libraryJpa.dao.CommentDao;
+import ru.otus.homework.libraryJpa.repository.BookDao;
+import ru.otus.homework.libraryJpa.repository.CommentDao;
 import ru.otus.homework.libraryJpa.model.Book;
 import ru.otus.homework.libraryJpa.model.Comment;
 import org.springframework.stereotype.Service;

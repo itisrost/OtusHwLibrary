@@ -6,11 +6,13 @@ public interface CommentService {
 
     String updateComment(String commentIdString, String bookIdString, String name);
 
+    String deleteComment(String commentIdString);
+
     String getComment(String id);
 
     String getAllComments();
 
     String getCommentsByBookId(String id);
 
-    String getCommentsCount();
+    long getCommentsCount();
 }

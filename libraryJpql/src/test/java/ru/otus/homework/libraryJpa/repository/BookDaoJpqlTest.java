@@ -1,4 +1,4 @@
-package ru.otus.homework.libraryJpa.dao;
+package ru.otus.homework.libraryJpa.repository;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ru.otus.homework.libraryJpa.dao;
+package ru.otus.homework.libraryJpa.repository;
 
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;

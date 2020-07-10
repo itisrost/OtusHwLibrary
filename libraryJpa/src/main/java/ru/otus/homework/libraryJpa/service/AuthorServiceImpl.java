@@ -6,10 +6,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
-import ru.otus.homework.libraryJpa.dao.AuthorDao;
 import ru.otus.homework.libraryJpa.model.Author;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.homework.libraryJpa.repository.AuthorRepository;
 
 @Service
 @AllArgsConstructor
@@ -20,14 +20,14 @@ public class AuthorServiceImpl implements AuthorService {
     public static final String NO_AUTHORS_IN_LIBRARY = "There is no authors in library :(";
     public static final String ID_MUST_BE_A_NUMBER = "Author id must be a number!";
 
-    private final AuthorDao authorDao;
+    private final AuthorRepository authorRepository;
 
     @Override
     @Transactional
     public String updateAuthor(String id, String name) {
         long authorId = parseId(id);
 
-        authorDao.save(new Author(authorId, name));
+        authorRepository.save(new Author(authorId, name));
 
         return String.format(UPDATED_SUCCESSFULLY, id);
     }
@@ -37,7 +37,7 @@ public class AuthorServiceImpl implements AuthorService {
     public String getAuthor(String id) {
         long authorId = parseId(id);
 
-        Optional<Author> author = authorDao.getById(authorId);
+        Optional<Author> author = authorRepository.findById(authorId);
         if (author.isPresent()) {
             return author.get().toString();
         } else {
@@ -48,7 +48,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional(readOnly = true)
     public String getAllAuthors() {
-        List<Author> authors = authorDao.getAll();
+        List<Author> authors = authorRepository.findAll();
 
         if (authors.isEmpty()) {
             return NO_AUTHORS_IN_LIBRARY;
@@ -59,8 +59,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional(readOnly = true)
-    public String getAuthorsCount() {
-        return authorDao.count().toString();
+    public long getAuthorsCount() {
+        return authorRepository.count();
     }
 
     private Long parseId(String id) {

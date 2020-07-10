@@ -8,5 +8,5 @@ public interface AuthorService {
 
     String getAllAuthors();
 
-    String getAuthorsCount();
+    long getAuthorsCount();
 }

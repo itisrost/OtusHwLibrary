@@ -1,21 +1,19 @@
 package ru.otus.homework.libraryJpa.service;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import ru.otus.homework.libraryJpa.dao.AuthorDao;
-import ru.otus.homework.libraryJpa.dao.BookDao;
-import ru.otus.homework.libraryJpa.dao.GenreDao;
 import ru.otus.homework.libraryJpa.model.Author;
 import ru.otus.homework.libraryJpa.model.Book;
 import ru.otus.homework.libraryJpa.model.Genre;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.homework.libraryJpa.repository.AuthorRepository;
+import ru.otus.homework.libraryJpa.repository.BookRepository;
+import ru.otus.homework.libraryJpa.repository.GenreRepository;
 
 @Service
 @AllArgsConstructor
@@ -28,17 +26,17 @@ public class BookServiceImpl implements BookService {
     public static final String NO_BOOKS_IN_LIBRARY = "There is no books in library :(";
     public static final String ID_MUST_BE_A_NUMBER = "Book id must be a number!";
 
-    private final BookDao bookDao;
-    private final AuthorDao authorDao;
-    private final GenreDao genreDao;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final GenreRepository genreRepository;
 
     @Override
     @Transactional
     public String saveBook(String title, String authorsString, String genresString) {
 
-        long bookId = bookDao.save(new Book(0, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
+        Book book = bookRepository.save(new Book(0, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
 
-        return String.format(SAVED_SUCCESSFULLY, bookId);
+        return String.format(SAVED_SUCCESSFULLY, book.getId());
     }
 
     @Override
@@ -46,7 +44,7 @@ public class BookServiceImpl implements BookService {
     public String updateBook(String id, String title, String authorsString, String genresString) {
         long bookId = parseId(id);
 
-        bookDao.save(new Book(bookId, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
+        bookRepository.save(new Book(bookId, title, saveAuthorsFromString(authorsString), saveGenresFromString(genresString)));
 
         return String.format(UPDATED_SUCCESSFULLY, id);
     }
@@ -56,9 +54,9 @@ public class BookServiceImpl implements BookService {
     public String getBook(String id) {
         long bookId = parseId(id);
 
-        Book book = bookDao.getById(bookId);
-        if (book != null) {
-            return book.toString();
+        Optional<Book> book = bookRepository.findById(bookId);
+        if (book.isPresent()) {
+            return book.get().toString();
         } else {
             return String.format(BOOK_NOT_FOUND, bookId);
         }
@@ -68,11 +66,11 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public String deleteBook(String id) {
         long bookId = parseId(id);
-        Book book = bookDao.getById(bookId);
-        if (book != null) {
-            bookDao.delete(book);
-            authorDao.deleteAuthorsWithoutBooks();
-            genreDao.deleteGenresWithoutBooks();
+        Optional<Book> book = bookRepository.findById(bookId);
+        if (book.isPresent()) {
+            bookRepository.delete(book.get());
+            authorRepository.deleteAuthorsWithoutBooks();
+            genreRepository.deleteGenresWithoutBooks();
             return String.format(DELETED_SUCCESSFULLY, id);
         } else {
             return String.format(BOOK_NOT_FOUND, id);
@@ -82,7 +80,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public String getAllBooks() {
-        List<Book> books = bookDao.getAll();
+        List<Book> books = bookRepository.findAll();
 
         if (books.isEmpty()) {
             return NO_BOOKS_IN_LIBRARY;
@@ -93,15 +91,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public String getBooksCount() {
-        return bookDao.count().toString();
+    public long getBooksCount() {
+        return bookRepository.count();
     }
 
     private List<Author> saveAuthorsFromString(String authorsString) {
         if (StringUtils.isNotEmpty(authorsString)) {
             return Arrays.stream(authorsString.split(","))
                     .map(String::trim)
-                    .map(authorName -> authorDao.getByName(authorName).orElseGet(() -> authorDao.save(new Author(authorName))))
+                    .map(authorName -> Objects.requireNonNullElseGet(authorRepository.findByName(authorName), () -> authorRepository.save(new Author(authorName))))
                     .collect(Collectors.toList());
         } else {
             return new ArrayList<>();
@@ -112,7 +110,7 @@ public class BookServiceImpl implements BookService {
         if (StringUtils.isNotEmpty(genresString)) {
             return Arrays.stream(genresString.split(","))
                     .map(String::trim)
-                    .map(genreName -> genreDao.getByName(genreName).orElseGet(() -> genreDao.save(new Genre(genreName))))
+                    .map(genreName -> Objects.requireNonNullElseGet(genreRepository.findByName(genreName), () -> genreRepository.save(new Genre(genreName))))
                     .collect(Collectors.toList());
         } else {
             return new ArrayList<>();

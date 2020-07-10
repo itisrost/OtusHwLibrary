@@ -23,7 +23,7 @@ public class AuthorShell {
     }
 
     @ShellMethod(value = "Get author count", key = {"gact", "getAuthorCount"})
-    public String getAuthorsCount() {
+    public long getAuthorsCount() {
         return authorService.getAuthorsCount();
     }
 

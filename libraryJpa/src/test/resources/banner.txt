@@ -1,8 +1,8 @@
-${AnsiColor.BRIGHT_GREEN} _      _  _                                  ___                _   _____             _
-${AnsiColor.BRIGHT_GREEN}| |    (_)| |                                |_  |              | | |_   _|           | |
-${AnsiColor.BRIGHT_GREEN}| |     _ | |__   _ __   __ _  _ __  _   _     | | _ __    __ _ | |   | |    ___  ___ | |_
-${AnsiColor.BRIGHT_GREEN}| |    | || '_ \ | '__| / _` || '__|| | | |    | || '_ \  / _` || |   | |   / _ \/ __|| __|
-${AnsiColor.BRIGHT_GREEN}| |____| || |_) || |   | (_| || |   | |_| |/\__/ /| |_) || (_| || |   | |  |  __/\__ \| |_
-${AnsiColor.BRIGHT_GREEN}\_____/|_||_.__/ |_|    \__,_||_|    \__, |\____/ | .__/  \__, ||_|   \_/   \___||___/ \__|
-${AnsiColor.BRIGHT_GREEN}                                      __/ |       | |        | |
-${AnsiColor.BRIGHT_GREEN}                                     |___/        |_|        |_|
+${AnsiColor.GREEN} _      _  _                                  ___                 _____             _
+${AnsiColor.GREEN}| |    (_)| |                                |_  |               |_   _|           | |
+${AnsiColor.GREEN}| |     _ | |__   _ __   __ _  _ __  _   _     | | _ __    __ _    | |    ___  ___ | |_
+${AnsiColor.GREEN}| |    | || '_ \ | '__| / _` || '__|| | | |    | || '_ \  / _` |   | |   / _ \/ __|| __|
+${AnsiColor.GREEN}| |____| || |_) || |   | (_| || |   | |_| |/\__/ /| |_) || (_| |   | |  |  __/\__ \| |_
+${AnsiColor.GREEN}\_____/|_||_.__/ |_|    \__,_||_|    \__, |\____/ | .__/  \__,_|   \_/   \___||___/ \__|
+${AnsiColor.GREEN}                                      __/ |       | |
+${AnsiColor.GREEN}                                     |___/        |_|
