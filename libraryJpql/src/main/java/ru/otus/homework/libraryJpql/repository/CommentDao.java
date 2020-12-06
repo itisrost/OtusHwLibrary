@@ -1,9 +1,9 @@
-package ru.otus.homework.libraryJpa.repository;
+package ru.otus.homework.libraryJpql.repository;
 
 import java.util.List;
 import java.util.Optional;
 
-import ru.otus.homework.libraryJpa.model.Comment;
+import ru.otus.homework.libraryJpql.model.Comment;
 
 public interface CommentDao {
 

@@ -1,7 +1,7 @@
-package ru.otus.homework.libraryJpa.shellComponents;
+package ru.otus.homework.libraryJpql.shellComponents;
 
 import lombok.RequiredArgsConstructor;
-import ru.otus.homework.libraryJpa.service.GenreService;
+import ru.otus.homework.libraryJpql.service.GenreService;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;

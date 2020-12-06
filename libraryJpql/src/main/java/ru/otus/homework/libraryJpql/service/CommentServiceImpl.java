@@ -1,4 +1,4 @@
-package ru.otus.homework.libraryJpa.service;
+package ru.otus.homework.libraryJpql.service;
 
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -6,10 +6,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
-import ru.otus.homework.libraryJpa.repository.BookDao;
-import ru.otus.homework.libraryJpa.repository.CommentDao;
-import ru.otus.homework.libraryJpa.model.Book;
-import ru.otus.homework.libraryJpa.model.Comment;
+import ru.otus.homework.libraryJpql.repository.BookDao;
+import ru.otus.homework.libraryJpql.repository.CommentDao;
+import ru.otus.homework.libraryJpql.model.Book;
+import ru.otus.homework.libraryJpql.model.Comment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

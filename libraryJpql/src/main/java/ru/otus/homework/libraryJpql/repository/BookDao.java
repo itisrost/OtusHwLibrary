@@ -1,8 +1,8 @@
-package ru.otus.homework.libraryJpa.repository;
+package ru.otus.homework.libraryJpql.repository;
 
 import java.util.List;
 
-import ru.otus.homework.libraryJpa.model.Book;
+import ru.otus.homework.libraryJpql.model.Book;
 
 public interface BookDao {
 

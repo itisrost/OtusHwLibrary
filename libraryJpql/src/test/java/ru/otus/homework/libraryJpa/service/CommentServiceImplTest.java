@@ -8,15 +8,17 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.libraryJpa.repository.BookDao;
-import ru.otus.homework.libraryJpa.repository.CommentDao;
-import ru.otus.homework.libraryJpa.model.Book;
-import ru.otus.homework.libraryJpa.model.Comment;
+import ru.otus.homework.libraryJpql.repository.BookDao;
+import ru.otus.homework.libraryJpql.repository.CommentDao;
+import ru.otus.homework.libraryJpql.model.Book;
+import ru.otus.homework.libraryJpql.model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.otus.homework.libraryJpql.service.CommentService;
+import ru.otus.homework.libraryJpql.service.CommentServiceImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

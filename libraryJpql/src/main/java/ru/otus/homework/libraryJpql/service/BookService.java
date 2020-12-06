@@ -1,4 +1,4 @@
-package ru.otus.homework.libraryJpa.service;
+package ru.otus.homework.libraryJpql.service;
 
 public interface BookService {
 

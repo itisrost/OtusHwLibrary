@@ -1,4 +1,4 @@
-package ru.otus.homework.libraryJpa.model;
+package ru.otus.homework.libraryJpql.model;
 
 import java.util.List;
 import java.util.stream.Collectors;

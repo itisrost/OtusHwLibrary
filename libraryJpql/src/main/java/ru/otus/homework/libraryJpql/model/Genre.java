@@ -1,4 +1,4 @@
-package ru.otus.homework.libraryJpa.model;
+package ru.otus.homework.libraryJpql.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
