@@ -14,6 +14,7 @@
         <module>libraryJdbc</module>
         <module>libraryJpql</module>
         <module>libraryJpa</module>
+        <module>libraryMongo</module>
     </modules>
 
 	<dependencies>
