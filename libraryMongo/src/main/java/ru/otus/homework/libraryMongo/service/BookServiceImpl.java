@@ -62,9 +62,8 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public String deleteBook(String id) {
-        Optional<Book> book = bookRepository.findById(id);
-        if (book.isPresent()) {
-            bookRepository.delete(book.get());
+        if (bookRepository.existsById(id)) {
+            bookRepository.deleteById(id);
             commentRepository.deleteAllByBookId(id);
             return String.format(DELETED_SUCCESSFULLY, id);
         } else {
